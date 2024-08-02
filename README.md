@@ -1,6 +1,6 @@
 # Automate_EMR_ETL_pipeline_using_Airflow
 
-This project provides a detailed overview of constructing a fully automated data engineering pipeline. It integrates Apache Airflow for workflow orchestration, utilizes Apache Spark on AWS EMR for large-scale data processing and employs Snowflake for data warehousing. Additionally, Tableau is used for creating visualizations to analyze the real estate market in the USA effectively.
+This project provides a detailed overview of creating an automated data engineering pipeline. It integrates Apache Airflow for workflow orchestration, utilizes Apache Spark on AWS EMR for large-scale data processing and employs Snowflake for data warehousing. Additionally, Tableau is used for creating visualizations to analyze the real estate market in the USA effectively.
 
 The detailed blog can be found here.
 
