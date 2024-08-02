@@ -1,0 +1,71 @@
+DROP DATABASE IF EXISTS de_database;
+CREATE DATABASE de_database; 
+CREATE SCHEMA de_schema; 
+
+-- create table 
+CREATE OR REPLACE TABLE de_database.de_schema.de_estate_table(
+    full_region STRING,
+    region STRING,
+    city STRING,
+    state STRING,
+    property_type STRING,
+    median_sale_price INT,
+    median_list_price FLOAT,
+    homes_sold FLOAT,
+    pending_sales FLOAT,
+    new_listings FLOAT,
+    inventory FLOAT,
+    months_of_supply FLOAT,
+    median_dom FLOAT,
+    avg_sale_to_list FLOAT,
+    sold_above_list FLOAT,
+    price_drops FLOAT,
+    last_updated DATETIME,
+    period_end_yr STRING,
+    period_end_month STRING
+)
+
+-- to move data from the S3 bucket, the file format needs to be specified 
+CREATE SCHEMA file_format_schema;
+CREATE OR REPLACE file format de_database.file_format_schema.format_parquet
+    type = "parquet"
+
+CREATE OR REPLACE file format de_database.file_format_schema.format_csv
+    type = 'CSV'
+    field_delimiter = ','
+    RECORD_DELIMITER = '\n'
+    skip_header = 1
+    --ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE;
+
+
+-- points Snowflake to the S3 bucket via external staging (to load the data)
+CREATE SCHEMA stage_schema;
+CREATE OR REPLACE STAGE de_database.stage_schema.s3_de_stage
+    url = 's3://auto-de-data/transform-data/'
+    CREDENTIALS = (AWS_KEY_ID = <add your key> AWS_SECRET_KEY = <add your secret key>)
+    FILE_FORMAT = de_database.file_format_schema.format_csv;
+
+
+LIST @de_database.stage_schema.s3_de_stage;
+
+-- setting the snowpipe to load the data automatically 
+
+CREATE OR REPLACE SCHEMA pipe_schema; -- or de_database.pipe_schema
+
+
+CREATE OR REPLACE PIPE de_database.pipe_schema.s3_de_pipe
+auto_ingest = TRUE
+AS
+COPY INTO de_database.de_schema.de_estate_table
+FROM @de_database.stage_schema.s3_de_stage
+PATTERN = '.*\.csv$'
+ON_ERROR = 'CONTINUE';
+
+-- Add a notification channel to AWS to trigger the loading 
+
+DESC PIPE de_database.pipe_schema.s3_de_pipe;
+
+TRUNCATE TABLE de_database.de_schema.de_estate_table;
+
+
+select * from de_database.de_schema.de_estate_table;
