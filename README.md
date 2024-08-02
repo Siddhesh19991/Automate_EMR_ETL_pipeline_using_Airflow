@@ -4,6 +4,8 @@ This project provides a detailed overview of constructing a fully automated data
 
 The detailed blog can be found here.
 
+--
+
 To build the entire pipeline, here was the process:
 - Configuring the necessary AWS services
 - Setting up Airflow
