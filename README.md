@@ -4,7 +4,7 @@ This project provides a detailed overview of constructing a fully automated data
 
 The detailed blog can be found here.
 
---
+---
 
 To build the entire pipeline, here was the process:
 - Configuring the necessary AWS services
@@ -25,6 +25,6 @@ Here is the final output of the dashboard created using Tableau:
 <img width="1167" alt="Screenshot 2024-08-02 at 2 58 27 PM" src="https://github.com/user-attachments/assets/4d618377-35bb-45b5-ad3f-a9b84009d328">
 
 
-
+---
 For questions or feedback about the project, don't hesitate to reach out to me on [LinkedIn](https://www.linkedin.com/in/siddhesh-sreedar/).
 
